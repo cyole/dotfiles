@@ -1,0 +1,27 @@
+[helpers]
+
+[default]
+depends = []
+
+[default.files]
+
+# shell
+"zsh/.zshrc" = "~/.zshrc"
+fish = "~/.config/fish"
+"starship/starship.toml" = "~/.config/starship.toml"
+
+# terminal
+kitty = "~/.config/kitty"
+ghostty = "~/.config/ghostty"
+foot = "~/.config/foot"
+
+# niri
+niri = "~/.config/niri"
+
+btop = "~/.config/btop"
+
+# nvim
+nvim = "~/.config/nvim"
+
+[settings]
+default_target_type = "automatic"
