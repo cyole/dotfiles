@@ -18,6 +18,7 @@ foot = "~/.config/foot"
 # niri
 niri = "~/.config/niri"
 
+fastfetch = "~/.config/fastfetch"
 btop = "~/.config/btop"
 
 # nvim
