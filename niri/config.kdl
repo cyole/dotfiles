@@ -1,16 +1,15 @@
 environment {
+   XDG_CURRENT_DESKTOP "niri"
+   QT_QPA_PLATFORM "wayland"
    ELECTRON_OZONE_PLATFORM_HINT "auto"
+   QT_QPA_PLATFORMTHEME "gtk3"
+   QT_QPA_PLATFORMTHEME_QT6 "gtk3"
 	QT_IM_MODULE "fcitx"
 	XMODIFIERS "@im=fcitx"
 	SDL_IM_MODULE "fcitx"
 	GLFW_IM_MODULE "ibus"
 	INPUT_METHOD "fcitx"
-	ELECTRON_OZONE_PLATFORM_HINT "auto"
-	QT_QPA_PLATFORM "wayland"
-	QT_QPA_PLATFORMTHEME "kde"
-	XDG_MENU_PREFIX "plasma-"
-	ILLOGICAL_IMPULSE_VIRTUAL_ENV "~/.local/state/quickshell/.venv"
-	TERMINAL "kitty -1"
+	TERMINAL "foot"
 }
 
 // Required for clipboard history integration
@@ -82,12 +81,11 @@ window-rule {
    opacity 0.85
 }
 
-// cursor vscode 透明度
+// terminal 透明度
 window-rule {
-   match app-id="(firefox|kitty|Cursor|Code|Notion|ghostty|foot)"
+   match app-id="(kitty|ghostty|foot)"
    opacity 0.90
 }
-
 
 // 悬浮匹配
 window-rule {
@@ -107,6 +105,49 @@ window-rule {
     default-column-width {}
 }
 
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    match app-id="Alacritty"
+    match app-id="zen"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    match app-id="foot"
+    draw-border-with-background false
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// Open DMS windows as floating by default
+window-rule {
+    match app-id=r#"org.quickshell$"#
+    open-floating true
+}
+
+layout {
+    // You can tailor the gaps to fit dms spacing.
+    gaps 5
+    background-color "transparent"
+}
+
+layer-rule {
+    match namespace="^quickshell$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="dms:blurwallpaper"
+    place-within-backdrop true
+}
 
 // Dank keybinds
 // 1. These should not be in conflict with any pre-existing keybindings
