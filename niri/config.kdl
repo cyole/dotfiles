@@ -46,6 +46,7 @@ cursor {
 }
 
 output "DP-1" {
+   // variable-refresh-rate
    mode "3840x2160@120.000"
 }
 
