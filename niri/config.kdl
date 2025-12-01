@@ -40,7 +40,6 @@ config-notification {
 }
 
 cursor {
-   hide-when-typing
    xcursor-theme "catppuccin-mocha-dark-cursors"
 }
 
