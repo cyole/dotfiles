@@ -15,7 +15,7 @@ Personal dotfiles managed with [dotter](https://github.com/SuperCuber/dotter).
 
 ```bash
 # Install dotter
-paru -S dotter
+paru -S dotter-rs-bin
 
 # Deploy configurations
 dotter deploy
