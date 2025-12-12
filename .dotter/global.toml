@@ -24,5 +24,15 @@ btop = "~/.config/btop"
 # nvim
 nvim = "~/.config/nvim"
 
+# DankShell
+DankMaterialShell = "~/.config/DankMaterialShell"
+dgop = "~/.config/dgop"
+
+fcitx5 = "~/.config/fcitx5"
+fontconfig = "~/.config/fontconfig"
+
+# solatar
+solaar = "~/.config/solaar"
+
 [settings]
 default_target_type = "automatic"

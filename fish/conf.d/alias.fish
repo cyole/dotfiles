@@ -1,3 +1,7 @@
+# Aliases
+alias ls 'eza --icons'
+alias ff 'fastfetch'
+
 # -------------------------------- #
 # Node Package Manager
 # -------------------------------- #
