@@ -1,141 +1,89 @@
-environment {
-   XDG_CURRENT_DESKTOP "niri"
-   QT_QPA_PLATFORM "wayland"
-   ELECTRON_OZONE_PLATFORM_HINT "auto"
-   QT_QPA_PLATFORMTHEME "gtk3"
-   QT_QPA_PLATFORMTHEME_QT6 "gtk3"
-	QT_IM_MODULE "fcitx"
-	XMODIFIERS "@im=fcitx"
-	SDL_IM_MODULE "fcitx"
-	GLFW_IM_MODULE "ibus"
-	INPUT_METHOD "fcitx"
-	TERMINAL "foot"
-}
-
 // Required for clipboard history integration
 spawn-at-startup "bash" "-c" "wl-paste --watch cliphist store &"
-
-// Recommended (must install polkit-mate before hand) for elevation prompts
-spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
-// This may be a different path on different distributions, the above is for the arch linux mate-polkit package
-
 // xwayland scale
 spawn-at-startup "xrdb" "-merge" "/home/cyole/.Xresources"
 
-// Starts Fcitx5
-spawn-at-startup "fcitx5"
-
-// 不展示热键提示
-hotkey-overlay { 
-    skip-at-startup
+environment {
+    XDG_CURRENT_DESKTOP "niri"
 }
 
-// 截图不保存到本地
-screenshot-path null
-
-// If using niri newer than 271534e115e5915231c99df287bbfe396185924d (~aug 17 2025)
-// you can add this to disable built in config load errors since dank shell provides this
 config-notification {
     disable-failed
 }
 
-cursor {
-   xcursor-theme "catppuccin-mocha-dark-cursors"
-}
-
-output "DP-1" {
-   // variable-refresh-rate
-   mode "3840x2160@120.000"
+hotkey-overlay {
+    skip-at-startup
 }
 
 overview {
-    zoom 0.4
+    workspace-shadow {
+        off
+    }
 }
 
-//先全局，方便覆盖
-window-rule {
-   // 将此规则应用于所有窗口 (因为没有 match 条件)
+prefer-no-csd
 
-   // // 圆角
-   // geometry-corner-radius 18.0
-   // clip-to-geometry true
-   // // 对，niri绘制s
-   // draw-border-with-background false
+screenshot-path null
 
-   // // 新窗口默认不最大化
-   // open-maximized false
-   // // 新窗口默认平铺，而非浮动
-   // open-floating false
-
-   // // 全局默认宽度设置为屏幕宽度的 60%
-   default-column-width { proportion 0.6; }
-   // default-window-height { 
-   //    proportion 1.0;
-   // }
+output "DP-1" {
+    mode "3840x2160@120.000"
 }
 
-// 透明度
-window-rule {
-   match is-floating=false is-active=false
-   opacity 0.85
-}
-
-// terminal 透明度
-window-rule {
-   match app-id="(kitty|ghostty|foot)"
-   opacity 0.90
-}
-
-// 悬浮匹配
-window-rule {
-	match app-id="(wechat|QQ|dingtalk|Clash|gwenview|yesplaymusic)"
-	open-floating true
-}
-
-// steam通知悬浮
-window-rule {
-    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
-    default-floating-position x=10 y=10 relative-to="bottom-right"
-}
-
-// wezterm
-window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-
-window-rule {
-    match app-id=r#"^org\.gnome\."#
-    draw-border-with-background false
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-
-window-rule {
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    match app-id="Alacritty"
-    match app-id="zen"
-    match app-id="com.mitchellh.ghostty"
-    match app-id="kitty"
-    match app-id="foot"
-    draw-border-with-background false
-}
-
-window-rule {
-    geometry-corner-radius 12
-    clip-to-geometry true
-}
-
-// Open DMS windows as floating by default
-window-rule {
-    match app-id=r#"org.quickshell$"#
-    open-floating true
-}
-
+// Settings that influence how windows are positioned and sized.
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
-    // You can tailor the gaps to fit dms spacing.
-    gaps 5
+    // Set gaps around windows in logical pixels.
     background-color "transparent"
+    // When to center a column when changing focus, options are:
+    // - "never", default behavior, focusing an off-screen column will keep at the left
+    //   or right edge of the screen.
+    // - "always", the focused column will always be centered.
+    // - "on-overflow", focusing a column will center it if it doesn't fit
+    //   together with the previously focused column.
+    center-focused-column "never"
+    // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
+    preset-column-widths {
+        // Proportion sets the width as a fraction of the output width, taking gaps into account.
+        // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
+        // The default preset widths are 1/3, 1/2 and 2/3 of the output.
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+        // Fixed sets the width in logical pixels exactly.
+        // fixed 1920
+    }
+    // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
+    // preset-window-heights { }
+    // You can change the default width of the new windows.
+    default-column-width { proportion 0.5; }
+    // If you leave the brackets empty, the windows themselves will decide their initial width.
+    // default-column-width {}
+    // By default focus ring and border are rendered as a solid background rectangle
+    // behind windows. That is, they will show up through semitransparent windows.
+    // This is because windows using client-side decorations can have an arbitrary shape.
+    //
+    // If you don't like that, you should uncomment `prefer-no-csd` below.
+    // Niri will draw focus ring and border *around* windows that agree to omit their
+    // client-side decorations.
+    //
+    // Alternatively, you can override it with a window rule called
+    // `draw-border-with-background`.
+    border {
+        off
+        width 4
+        active-color   "#707070"      // Neutral gray
+        inactive-color "#d0d0d0"      // Light gray
+        urgent-color   "#cc4444"      // Softer red
+    }
+    shadow {
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#0007"
+    }
+    struts {
+    }
 }
 
 layer-rule {
@@ -143,153 +91,117 @@ layer-rule {
     place-within-backdrop true
 }
 
-layer-rule {
-    match namespace="dms:blurwallpaper"
-    place-within-backdrop true
+animations {
+    workspace-switch {
+        spring damping-ratio=0.80 stiffness=523 epsilon=0.0001
+    }
+    window-open {
+        duration-ms 150
+        curve "ease-out-expo"
+    }
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    horizontal-view-movement {
+        spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
+    }
+    window-movement {
+        spring damping-ratio=0.75 stiffness=323 epsilon=0.0001
+    }
+    window-resize {
+        spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
+    }
+    config-notification-open-close {
+        spring damping-ratio=0.65 stiffness=923 epsilon=0.001
+    }
+    screenshot-ui-open {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
+    overview-open-close {
+        spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
+    }
 }
 
-// Dank keybinds
-// 1. These should not be in conflict with any pre-existing keybindings
-// 2. You need to merge them with your existing config if you want to use these
-// 3. You can change the keys to whatever you want, if you prefer something different
-// 4. For the increment/decrement ones you can change the steps to whatever you like too
-binds {
-   // Window
-   Mod+Q { close-window; }
-   Mod+Shift+F { fullscreen-window; }
-   Mod+O { toggle-window-rule-opacity; }
-
-   // Workspace
-   Mod+Up cooldown-ms=150 { focus-workspace-up; }
-   Mod+Down cooldown-ms=150 { focus-workspace-down; }
-   Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
-   Mod+WheelScrollUp   cooldown-ms=150 { focus-workspace-up; }
-   Mod+Shift+Up { move-workspace-up; }
-   Mod+Shift+Down { move-workspace-down; }
-   Mod+Shift+Minus hotkey-overlay-title="纵向缩小窗口" {
-      set-window-height "-10%"
-   }
-   Mod+Shift+Equal hotkey-overlay-title="纵向放大窗口" {
-      set-window-height "+10%"
-   }
-   Mod+A hotkey-overlay-title="悬浮切换" {
-      toggle-window-floating;
-   }
-
-   Mod+1 { focus-workspace 1; }
-   Mod+2 { focus-workspace 2; }
-   Mod+3 { focus-workspace 3; }
-   Mod+4 { focus-workspace 4; }
-   Mod+5 { focus-workspace 5; }
-   Mod+6 { focus-workspace 6; }
-   Mod+7 { focus-workspace 7; }
-   Mod+8 { focus-workspace 8; }
-   Mod+9 { focus-workspace 9; }
-
-   // Column
-   Mod+Tab { toggle-overview; }
-   Mod+Left { focus-column-left; }
-   Mod+Shift+Left { move-column-left; }
-   Mod+Right { focus-column-right; }
-   Mod+Shift+Right { move-column-right; }
-   Mod+WheelScrollRight { focus-column-right; }
-   Mod+WheelScrollLeft { focus-column-left; }
-   Mod+F { maximize-column; }
-   Mod+Minus hotkey-overlay-title="横向缩小窗口" {
-      set-column-width "-10%"
-   }
-   Mod+Equal hotkey-overlay-title="横向放大窗口" {
-      set-column-width "+10%"
-   }
-   Mod+Ctrl+Up   hotkey-overlay-title="将列移动到上一个工作区" {
-      move-column-to-workspace-up;
-   }
-   Mod+Ctrl+Down hotkey-overlay-title="将列移动到下一个工作区" {
-       move-column-to-workspace-down;
-   }
-
-   // 切换Tab显示模式
-   Mod+T { toggle-column-tabbed-display; }
-
-   // 将窗口拖拽到列中
-   Mod+W { consume-window-into-column; }
-   // 将窗口从列中移除
-   Mod+Shift+W { expel-window-from-column; }
-
-   Mod+Alt+Down { focus-window-down; }
-   Mod+Alt+Up { focus-window-up; }
-
-   // 窗口截图
-   Alt+A hotkey-overlay-title="窗口截图" {
-      screenshot show-pointer=false; 
-   }
-   // 窗口截图
-   Mod+Ctrl+A hotkey-overlay-title="窗口截图" {
-      screenshot-window write-to-disk=false;
-   }
-
-   // 全屏截图
-   Mod+Ctrl+Shift+A hotkey-overlay-title="全屏截图" {
-      screenshot-screen write-to-disk=false;
-   }
-
-   // Terminal
-   Mod+Return { 
-      spawn "foot";
-   }
-
-   Mod+Slash { show-hotkey-overlay; }
-
-   Mod+Space hotkey-overlay-title="Application Launcher" {
-      spawn "dms" "ipc" "call" "spotlight" "toggle";
-   }
-   Mod+V hotkey-overlay-title="Clipboard Manager" {
-      spawn "dms" "ipc" "call" "clipboard" "toggle";
-   }
-   Mod+M hotkey-overlay-title="Task Manager" {
-      spawn "dms" "ipc" "call" "processlist" "toggle";
-   }
-   Mod+N hotkey-overlay-title="Notification Center" {
-      spawn "dms" "ipc" "call" "notifications" "toggle";
-   }
-   Mod+Comma hotkey-overlay-title="Settings" {
-      spawn "dms" "ipc" "call" "settings" "toggle";
-   }
-   Mod+P hotkey-overlay-title="Notepad" {
-      spawn "dms" "ipc" "call" "notepad" "toggle";
-   }
-   Mod+Shift+L hotkey-overlay-title="Lock Screen" {
-      spawn "dms" "ipc" "call" "lock" "lock";
-   }
-   Mod+X hotkey-overlay-title="Power Menu" {
-      spawn "dms" "ipc" "call" "powermenu" "toggle";
-   }
-   Mod+C hotkey-overlay-title="Control Center" {
-      spawn "dms" "ipc" "call" "control-center" "toggle";
-   }
-   XF86AudioRaiseVolume allow-when-locked=true {
-      spawn "dms" "ipc" "call" "audio" "increment" "3";
-   }
-   XF86AudioLowerVolume allow-when-locked=true {
-      spawn "dms" "ipc" "call" "audio" "decrement" "3";
-   }
-   XF86AudioMute allow-when-locked=true {
-      spawn "dms" "ipc" "call" "audio" "mute";
-   }
-   XF86AudioMicMute allow-when-locked=true {
-      spawn "dms" "ipc" "call" "audio" "micmute";
-   }
-   XF86MonBrightnessUp allow-when-locked=true {
-      spawn "dms" "ipc" "call" "brightness" "increment" "5" "";
-   }
-   // You can override the default device for e.g. keyboards by adding the device name to the last param
-   XF86MonBrightnessDown allow-when-locked=true {
-      spawn "dms" "ipc" "call" "brightness" "decrement" "5" "";
-   }
-   // Night mode toggle
-   Mod+Shift+N allow-when-locked=true {
-      spawn "dms" "ipc" "call" "night" "toggle";
-   }
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
 }
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+window-rule {
+    match app-id=r#"^gnome-control-center$"#
+    match app-id=r#"^pavucontrol$"#
+    match app-id=r#"^nm-connection-editor$"#
+    default-column-width { proportion 0.5; }
+    open-floating false
+}
+window-rule {
+    match app-id=r#"^gnome-calculator$"#
+    match app-id=r#"^galculator$"#
+    match app-id=r#"^blueman-manager$"#
+    match app-id=r#"^org\.gnome\.Nautilus$"#
+    match app-id=r#"^steam$"#
+    match app-id=r#"^xdg-desktop-portal$"#
+    open-floating true
+}
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    match app-id="Alacritty"
+    match app-id="zen"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    draw-border-with-background false
+}
+window-rule {
+    match is-active=false
+    opacity 0.85
+}
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id="zoom"
+    open-floating true
+}
+// Open dms windows as floating by default
+window-rule {
+    match app-id=r#"org.quickshell$"#
+    open-floating true
+}
+
+window-rule {
+	match app-id="(wechat|QQ|dingtalk|Clash)"
+	open-floating true
+}
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+// Override to disable super+tab
+recent-windows {
+    binds {
+        Alt+Tab         { next-window scope="output"; }
+        Alt+Shift+Tab   { previous-window scope="output"; }
+        Alt+grave       { next-window filter="app-id"; }
+        Alt+Shift+grave { previous-window filter="app-id"; }
+    }
+}
+
+// Include dms files
 include "dms/colors.kdl"
 include "dms/layout.kdl"
+include "dms/alttab.kdl"
+include "dms/binds.kdl"
