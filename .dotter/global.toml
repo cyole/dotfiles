@@ -6,7 +6,7 @@ depends = []
 [default.files]
 
 # environment.d
-environment.d = "~/.config/environment.d"
+"environment.d" = "~/.config/environment.d"
 
 # shell
 "zsh/.zshrc" = "~/.zshrc"
@@ -35,8 +35,10 @@ fastfetch = "~/.config/fastfetch"
 
 fontconfig = "~/.config/fontconfig"
 
-gtk-3.0 = "~/.config/gtk-3.0"
-gtk-4.0 = "~/.config/gtk-4.0"
+"gtk-3.0" = "~/.config/gtk-3.0"
+"gtk-4.0" = "~/.config/gtk-4.0"
+
+[default.variables]
 
 [settings]
 default_target_type = "automatic"
