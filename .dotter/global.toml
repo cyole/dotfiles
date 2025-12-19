@@ -5,21 +5,19 @@ depends = []
 
 [default.files]
 
+# environment.d
+environment.d = "~/.config/environment.d"
+
 # shell
 "zsh/.zshrc" = "~/.zshrc"
 fish = "~/.config/fish"
 "starship/starship.toml" = "~/.config/starship.toml"
 
 # terminal
-kitty = "~/.config/kitty"
 ghostty = "~/.config/ghostty"
-foot = "~/.config/foot"
 
 # niri
 niri = "~/.config/niri"
-
-fastfetch = "~/.config/fastfetch"
-btop = "~/.config/btop"
 
 # nvim
 nvim = "~/.config/nvim"
@@ -28,11 +26,17 @@ nvim = "~/.config/nvim"
 DankMaterialShell = "~/.config/DankMaterialShell"
 dgop = "~/.config/dgop"
 
+# im
+fcitx = "~/.config/fcitx"
 fcitx5 = "~/.config/fcitx5"
+rime = "~/.local/share/fcitx5/rime"
+
+fastfetch = "~/.config/fastfetch"
+
 fontconfig = "~/.config/fontconfig"
 
-# solatar
-solaar = "~/.config/solaar"
+gtk-3.0 = "~/.config/gtk-3.0"
+gtk-4.0 = "~/.config/gtk-4.0"
 
 [settings]
 default_target_type = "automatic"
