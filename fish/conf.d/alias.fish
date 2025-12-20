@@ -1,6 +1,7 @@
 # Aliases
 alias ls 'eza --icons'
 alias ff 'fastfetch'
+alias syu 'paru -Syu'
 
 # -------------------------------- #
 # Node Package Manager
