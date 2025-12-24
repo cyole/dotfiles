@@ -37,7 +37,12 @@
     },
     {
       "type": "disk",
-      "key": "└ └",
+      "key": "│ ├",
+      "keyColor": "green"
+    },
+    {
+      "type": "display",
+      "key": "└ └",
       "keyColor": "green"
     },
     {
@@ -129,9 +134,6 @@
       "type": "custom",
       "format": "\u001b[90m└─────────────────────────────────────────────────────────┘"
     },
-    //        {
-    //            "type": "colors"
-    //        },
     {
       "type": "colors",
       "paddingLeft": 2,
