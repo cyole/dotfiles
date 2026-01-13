@@ -38,6 +38,8 @@ fontconfig = "~/.config/fontconfig"
 "gtk-3.0" = "~/.config/gtk-3.0"
 "gtk-4.0" = "~/.config/gtk-4.0"
 
+opencode = "~/.config/opencode"
+
 [default.variables]
 
 [settings]

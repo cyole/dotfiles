@@ -194,7 +194,7 @@ window-rule {
 }
 
 window-rule {
-	match app-id="(wechat|QQ|dingtalk|clash-verge)"
+	match app-id="(wechat|QQ|dingtalk|clash-verge|Feishu)"
 	open-floating true
 }
 
